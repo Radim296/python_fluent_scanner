@@ -20,3 +20,6 @@ termcolor = "^2.3.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+    fluent_scanner = "python_fluent_scanner"
