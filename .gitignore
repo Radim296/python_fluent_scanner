@@ -224,3 +224,4 @@ pyrightconfig.json
 
 *.ftl
 .*_cache
+*.json

@@ -1,6 +1,9 @@
 from fluent.syntax import parse
 from fluent.syntax import ast
+from fluent.syntax.errors import ParseError
 from typing import Dict
+
+from termcolor import cprint
 from python_fluent_scanner.types.enums import FluentPlaceableTypes
 from python_fluent_scanner.types.models import (
     ScannerConfig,
@@ -11,6 +14,16 @@ from python_fluent_scanner.types.models import (
 
 
 class FluentReader:
+    def __is_comment(self, entry: ast.Entry) -> bool:
+        """
+        The function checks if an entry is a comment in an abstract syntax tree.
+
+        :param entry: The `entry` parameter is of type `ast.Entry`
+        :type entry: ast.Entry
+        :return: a boolean value.
+        """
+        return isinstance(entry, (ast.BaseComment, ast.ResourceComment, ast.GroupComment, ast.Comment,))
+
     def __get_entry_placeables(self, entry: ast.Entry) -> Dict[str, FluentPlaceable]:
         """
         The function `__get_entry_placeables` extracts placeables from an AST entry object in a Fluent file
@@ -42,12 +55,15 @@ class FluentReader:
         """
 
         with open(path, "r", encoding="utf-8") as file:
-            resource = parse(file.read())
+            try:
+                resource = parse(file.read())
+            except ParseError:
+                cprint(f"An error occurred while parsing {language_code} from {path}")
 
         messages: Dict[str, FluentMessage] = {}
 
         for entry in resource.body:
-            if not isinstance(entry, ast.Comment):
+            if isinstance(entry, ast.Message):
                 messages[entry.id.name] = FluentMessage(
                     placeables=self.__get_entry_placeables(entry=entry),
                 )
