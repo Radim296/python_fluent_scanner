@@ -3,7 +3,7 @@ from fluent.syntax import ast
 from fluent.syntax.errors import ParseError
 from typing import Dict
 
-from termcolor import cprint
+from termcolor import cprint, colored
 from python_fluent_scanner.types.enums import FluentPlaceableTypes
 from python_fluent_scanner.types.models import (
     ScannerConfig,
@@ -11,7 +11,6 @@ from python_fluent_scanner.types.models import (
     FluentMessage,
     FluentPlaceable,
 )
-
 
 class FluentReader:
     def __is_comment(self, entry: ast.Entry) -> bool:
@@ -72,6 +71,9 @@ class FluentReader:
 
         for entry in resource.body:
             if isinstance(entry, ast.Message):
+                if messages.get(entry.id.name):
+                    print(colored(f"DICT({language_code}):"), "Found duplicate for {entry.id.name}")
+
                 messages[entry.id.name] = FluentMessage(
                     placeables=self.__get_entry_placeables(entry=entry),
                 )
