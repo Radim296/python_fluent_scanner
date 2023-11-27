@@ -72,7 +72,7 @@ class FluentReader:
         for entry in resource.body:
             if isinstance(entry, ast.Message):
                 if messages.get(entry.id.name):
-                    print(colored(f"DICT({language_code}):"), f"Found duplicate for {entry.id.name}")
+                    print(colored(f"DICT({language_code}):", "blue"), f"Found duplicate for {entry.id.name}")
 
                 messages[entry.id.name] = FluentMessage(
                     placeables=self.__get_entry_placeables(entry=entry),
