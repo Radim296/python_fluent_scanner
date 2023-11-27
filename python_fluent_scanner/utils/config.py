@@ -37,6 +37,4 @@ class ConfigReader:
                     config.root_locale in config.dictionaries
                 ), "Incorrect root locale value"
 
-                print(list(config.dictionaries.keys()))
-
                 return config

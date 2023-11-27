@@ -22,7 +22,15 @@ class FluentReader:
         :type entry: ast.Entry
         :return: a boolean value.
         """
-        return isinstance(entry, (ast.BaseComment, ast.ResourceComment, ast.GroupComment, ast.Comment,))
+        return isinstance(
+            entry,
+            (
+                ast.BaseComment,
+                ast.ResourceComment,
+                ast.GroupComment,
+                ast.Comment,
+            ),
+        )
 
     def __get_entry_placeables(self, entry: ast.Entry) -> Dict[str, FluentPlaceable]:
         """
